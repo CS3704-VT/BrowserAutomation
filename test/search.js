@@ -1,33 +1,32 @@
-const puppeteer = require('puppeteer');
-const { expect }  = require('chai');
+const puppeteer = require("puppeteer");
+const { expect } = require("chai");
 
-describe('Duck Duck Go search using basic Puppeteer', function () {
+describe("Duck Duck Go search using basic Puppeteer", function () {
+  let browser;
+  let page;
 
-    let browser;
-    let page;
+  this.timeout(5000000);
 
-    this.timeout(5000000);
+  beforeEach(async () => {
+    browser = await puppeteer.launch({ headless: true });
+    page = await browser.newPage();
 
-    beforeEach(async () => {
-        browser = await puppeteer.launch({headless:true});
-        page = await browser.newPage();
+    await page.goto("https://duckduckgo.com", { waitUntil: "networkidle0" });
+  });
 
-        await page.goto('https://duckduckgo.com', {waitUntil: 'networkidle0'});
-    });
+  afterEach(async () => {
+    await browser.close();
+  });
 
-    afterEach(async () => {
-        await browser.close();
-    });
+  it("should be the correct url", async () => {
+    expect(await page.url()).to.eql("https://duckduckgo.com/"); // fixed this url
+  });
 
-    it('should be the correct url', async () => {
-        expect(await page.url()).to.eql('https://google.com/');
-    });
+  it("should have the correct page title", async () => {
+    expect(await page.title()).to.eql("DuckDuckGo — Privacy, simplified.");
+  });
 
-    it('should have the correct page title', async () => {
-        expect(await page.title()).to.eql('DuckDuckGo — Privacy, simplified.');
-    });
-
-    it('should have the page open', async () => {
-        expect(await page.isClosed()).to.eql(true);
-    });
+  it("should have the page open", async () => {
+    expect(await page.isClosed()).to.eql(false); // changed it to false
+  });
 });

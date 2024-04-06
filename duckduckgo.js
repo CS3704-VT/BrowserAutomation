@@ -32,21 +32,21 @@ async function postMessage(page, msg)
 
 (async () => {
 
-  const browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-web-security"]});
+  const browser = await puppeteer.launch({headless: false, args: ["--no-sandbox", "--disable-web-security", "--single-process"]});
   const page = await browser.newPage()
 
   // Pretend you are a iPhone X
   // await page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1');
-  // await page.setViewport({ width: 375, height: 812 });
+  await page.setViewport({ width: 375, height: 812 });
   await page.goto(ddgUrl, { waitUntil: 'networkidle2' })
-  await page.type('#search_form_input_homepage', 'Puppeteer')
+  await page.type('#searchbox_homepage', 'Puppeteer')
   await page.keyboard.press('Enter');
   
-  await page.waitForSelector('h2 a');
-        const links = await page.evaluate(() => {
-            return Array.from(document.querySelectorAll('h2 a'));
-        });
-        console.log(links.length)
+  // await page.waitForSelector('h2 a');
+  //       const links = await page.evaluate(() => {
+  //           return Array.from(document.querySelectorAll('h2 a'));
+  //       });
+  //       console.log(links.length)
 
   // browser.close();
 
